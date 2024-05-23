@@ -23,6 +23,12 @@ jobs:
         with:
           push: true
           tags: defaultprofile/playwright-docker:latest
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
       - name: Update ECS Service
         uses: imehedi/actions-awscli-v2@latest
         with:
