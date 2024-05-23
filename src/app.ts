@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.send('(Update 3) Server is up & running...'));
+app.get('/', (req, res) => res.send('(Update 4) Server is up & running...'));
 
 app.get('/health', (req, res) => res.send('Server is healthy!'));
 
