@@ -23,16 +23,14 @@ jobs:
         with:
           push: true
           tags: defaultprofile/playwright-docker:latest
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+      - name: Install & Configure AWS cli
+        run: python -m pip install awscli && aws configure
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
       - name: Update ECS Service
-        uses: imehedi/actions-awscli-v2@latest
-        with:
-          args: ecs update-service --cluster ${{ vars.AWS_ECS_CLUSTER }} --service ${{ vars.AWS_ECS_SERVICE }} --force-new-deployment
+        run: aws ecs update-service --cluster ${{ vars.AWS_ECS_CLUSTER }} --service ${{ vars.AWS_ECS_SERVICE }} --force-new-deployment
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
